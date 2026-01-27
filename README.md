@@ -41,12 +41,11 @@ The installer follows the suckless approach - only what's necessary:
 2. **Core Packages** - Essential X11, build tools, and suckless dependencies
 3. **UI Components** - Window manager utilities (rofi, dunst, etc.)
 4. **System Tools** - File manager, audio controls, power management
-5. **Suckless Builds** - Compiles and installs dwm, slstatus, st, and tabbed
+5. **Suckless Builds** - Compiles and installs dwm, slstatus, and st
 6. **External Tools** - Via butterscripts:
-   - FT-Labs picom (compositor)
+   - picom (compositor)
    - Nerd Fonts collection
    - LightDM display manager
-   - Bashrc enhancements
 7. **Optional Tools** - Additional browsers, editors, and utilities (prompted)
 
 ---
@@ -143,18 +142,12 @@ Launch the keybind cheatsheet anytime with:
 
 ## 🧱 Layouts
 
-Select layouts using:
-
-```text
-Super + Shift + L
-```
-
-This launches a rofi menu where you can select from available layouts.
+The default layouts work and I value simplicity over complexity. 
 
 <details>
 <summary>Click to expand layout descriptions</summary>
 
-These are the layouts included in this build, in the exact order from `config.def.h`:
+These are the layouts included in this build, in a modified order from `config.def.h`:
 
 - **[]= Tile** — Classic master-stack
 - **[M] Monocle** — Fullscreen stacked windows
@@ -164,7 +157,7 @@ These are the layouts included in this build, in the exact order from `config.de
 
 ---
 
-## 📂 Configuration Files
+## 📂 File Structure
 
 ```
 ~/suckless/
@@ -202,6 +195,8 @@ These are the layouts included in this build, in the exact order from `config.de
 
 ## 🧩 Patches Summary
 
+These patches and plugin provide functionality while applying cleanly (generally) and keeping system stable.
+
 | Patch                  | Category                | Version |
 |------------------------|-------------------------|---------|  
 | pertag                 | Structural foundation   | 6.2     |
@@ -224,76 +219,66 @@ These are the layouts included in this build, in the exact order from `config.de
 <details>
 <summary>Click to expand Patch Documenation</summary>
 
-### 7. `dwm-pertag-20200914-61bb8b2.diff`
+### 1. `dwm-pertag-20200914-61bb8b2.diff`
 **What it does:**  
 Each tag remembers its own **layout, master count, and gaps settings**.
 
 **Why it's useful:**  
-This is one of the most **essential DWM patches** if you use multiple tags. It allows each workspace (tag) to have its own independent configuration instead of all tags sharing the same layout.
+It allows each workspace (tag) to have its own independent configuration instead of all tags sharing the same layout; essential if you use multiple layouts.
 
 ---
 
-### 12. `dwm-status2d-6.4.diff`
+### 2. `dwm-fullgaps-toggle-20200830.diff`
 **What it does:**  
-Adds support for **color-embedded status text and a systray** in DWM’s status bar.
+This patch adds simple, aesthetic (non-functional) gaps between client windows. 
+
+**Why it's useful:**
+It enhances the look of your border, allowing you to see your desktop wallpaper. Also, it makes it easier to see which client has focus (why I install it). 
+
+**Usage:** 
+- `Super + equal` - Increase the size of gaps
+- `Super + minus` - Decrease the size of gaps
+- `Super + Shift + equal` - Rest the size of gaps to default
+- `Super + Shift + minus` - Toggle the gaps on or off
+
+</details>
+
+---
+
+### 3. `dwm-status2d-6.3.diff`
+**What it does:**  
+Adds support for **color-embedded status text** in DWM’s status bar.
 
 **Why it's useful:**  
-Combines two essential features:
-- Colored status text for aesthetic and information clarity.
-- Systray support for handling system tray icons (volume, network, etc.), which is not natively supported in DWM.
+Colored status text for aesthetic and information clarity. No tray support; I don't need the tray support.
 
 ---
 
-### 2. `dwm-attachbottom-6.3.diff`
+### 4. `dwm-movestack-20211115-a786211.diff`
+**What it does:**  
+This plugin allows you to move clients around in the stack and swap them with the master.
+
+**Why it's useful:**  
+You can swap the client with the current focus with the prev/next client. Compliments built-in focusstack.
+
+**Usage:** 
+- `Super + j` - Focus previous client in stack
+- `Super + k` - Focus next client in stack
+- `Super + Shift + j` - Swap focused client with previous client in stack
+- `Super + Shift + k` - Swap focused client with next client in stack
+
+---
+
+### 5. `dwm-attachbottom-6.3.diff`
 **What it does:**  
 Newly spawned windows are added at the **bottom** of the stack instead of at the top.
 
 **Why it's useful:**  
-This can help keep your active window in focus instead of being immediately pushed out when new windows are created. Provides a more "natural" stacking order for some users.
+Helps keep your active window in focus instead of being immediately pushed out when new windows are created.
 
 ---
 
-### 3. `dwm-cool_autostart-6.5.diff`
-**What it does:**  
-Adds an **autostart mechanism** to DWM without using `.xinitrc`.
-
-**Why it's useful:**  
-You can easily manage startup scripts directly in DWM’s codebase, making it more portable (especially when using login managers instead of `startx`). This patch also gracefully re-runs your autostart scripts if DWM is restarted.
-
----
-
-### 4. `dwm-focusedontop-6.6.diff`
-**What it does:**  
-Forces the currently focused floating window to always be on top.
-
-**Why it's useful:**  
-Prevents floating windows from accidentally being covered by tiled windows when they lose focus.
-
-**[This is a patch created by Bakkeby for dwm-flexipatch](https://github.com/bakkeby/patches/blob/master/dwm/dwm-focusedontop-6.6.diff)**
-
----
-
-### 5. `dwm-focusonnetactive-6.2.diff`
-**What it does:**  
-Ensures DWM correctly focuses windows that request focus via _NET_ACTIVE_WINDOW (like some app popups).
-
-**Why it's useful:**  
-Improves compatibility with external programs and scripts (e.g., notification popups, some dialogs, and xdg-open behavior).
-
----
-
-### 6. `dwm-fullscreen-6.2.diff`
-**What it does:**  
-Adds the ability for windows to be **faked fullscreen**, which is basically just a borderless, statusbar-less window that fits the entire screen.
-
-**Why it's useful:**  
-Some applications (like browsers, video players, and games) expect to be able to go fullscreen. This patch allows DWM to handle fullscreen requests properly while maintaining window management control. Unlike true fullscreen modes that bypass the window manager entirely, this keeps DWM in control while giving applications the fullscreen experience they expect.
-
-**Usage:** Press `Super + Shift + F` to toggle fullscreen mode for the focused window.
-
----
-
-### 10. `dwm-restartsig-20180523-6.2.diff`
+### 6. `dwm-restartsig-20180523-6.2.diff`
 **What it does:**  
 Adds a **restart signal handler** so you can restart DWM without logging out.
 
@@ -304,12 +289,52 @@ Allows easy config reloads and minor changes without logging out, pairing well w
 
 ---
 
-### 9. `dwm-preserveonrestart-6.3.diff`
+### 7. `dwm-preserveonrestart-6.3.diff`
 **What it does:**  
 Preserves window positions when restarting DWM.
 
 **Why it's useful:**  
 Critical if you like to restart DWM to reload config changes, keeping windows in place instead of resetting them.
+
+---
+
+### 8. `dwm-fullscreen-6.2.diff`
+**What it does:**  
+Adds the ability for windows to be **faked fullscreen**, which is basically just a borderless, statusbar-less window that fits the entire screen.
+
+**Why it's useful:**  
+Some applications (like browsers, video players, and games) expect to be able to go fullscreen. This patch allows DWM to handle fullscreen requests properly while maintaining window management control. Unlike true fullscreen modes that bypass the window manager entirely, this keeps DWM in control while giving applications the fullscreen experience they expect.
+
+**Usage:** Press `Super + Shift + F` to toggle fullscreen mode for the focused window.
+
+---
+
+### 9. `dwm-focusonnetactive-6.2.diff`
+**What it does:**  
+Ensures DWM correctly focuses windows that request focus via _NET_ACTIVE_WINDOW (like some app popups).
+
+**Why it's useful:**  
+Improves compatibility with external programs and scripts (e.g., notification popups, some dialogs, and xdg-open behavior).
+
+---
+
+### 10. `dwm-cool_autostart-6.5.diff`
+**What it does:**  
+Adds an **autostart mechanism** to DWM without using `.xinitrc`.
+
+**Why it's useful:**  
+You can easily manage startup scripts directly in DWM’s codebase, making it more portable (especially when using login managers instead of `startx`). This patch also gracefully re-runs your autostart scripts if DWM is restarted.
+
+---
+
+### 11. `dwm-focusedontop-6.6.diff`
+**What it does:**  
+Forces the currently focused floating window to always be on top.
+
+**Why it's useful:**  
+Prevents floating windows from accidentally being covered by tiled windows when they lose focus.
+
+**[This is a patch created by Bakkeby for dwm-flexipatch](https://github.com/bakkeby/patches/blob/master/dwm/dwm-focusedontop-6.6.diff)**
 
 ---
 
@@ -327,19 +352,6 @@ It allows you to navigate between tags quickly and to move windows around to par
 - `Super + Ctrl + O` - View tag to the right with clients
 - `Super + Shift + I` - Move window to the left and view tag
 - `Super + Shift + 0` - Move window to the right and view tag
-
----
-
-### 13. `dwm-sticky-6.5.diff`
-**What it does:**  
-Adds a "sticky" flag to windows, making them visible on all tags.
-
-**Why it's useful:**
-Perfect for windows you want to always have accessible, like music players, system monitors, or communication apps. Sticky windows follow you across all workspaces.
-
-**Usage:** Press `Super + Y` to toggle sticky mode for the focused window.
-
-</details>
 
 ---
 
