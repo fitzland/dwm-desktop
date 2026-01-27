@@ -3,10 +3,11 @@
 ![Made for Debian](https://img.shields.io/badge/Made%20for-Debian-A81D33?style=for-the-badge&logo=debian&logoColor=white)
 ![DWM Version](https://img.shields.io/badge/DWM-6.7-005577?style=for-the-badge&logo=c&logoColor=white)
 
-A minimal suckless DWM 6.7 setup for Debian-based systems.  
-Following the suckless philosophy with carefully selected patches — simple, efficient, and hackable.
-
 > Modified from work by the [JustAGuy Linux](https://codeberg.org/justaguylinux) window manager collection; just for me.
+> Influence by [Erik Dubois](https://github.com/erikdubois). Especially regarding configuration and keybindings.
+
+A minimal suckless DWM 6.7 setup for Debian-based systems. Designed for two monitor setup.  
+Following the suckless philosophy with carefully selected patches — simple, efficient, and hackable.  
 
 ## 📜 Suckless Philosophy
 
