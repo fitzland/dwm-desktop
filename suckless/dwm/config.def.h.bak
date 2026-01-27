@@ -66,26 +66,19 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
-#include "shift-tools.c"
 
 #include "movestack.c"
 static Key keys[] = {
  	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_i,      shiftview,           { .i = -1 } },
-	{ MODKEY,                       XK_o,	   shiftview,           { .i = +1 } },
-	{ MODKEY|ControlMask,	        XK_i,      shiftviewclients,    { .i = -1 } },
-	{ MODKEY|ControlMask,           XK_o,      shiftviewclients,    { .i = +1 } },
-	{ MODKEY|ShiftMask,		        XK_i,      shiftboth,           { .i = -1 }	},
-	{ MODKEY|ShiftMask,             XK_o,      shiftboth,           { .i = +1 }	},
  	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-	{ MODKEY,                       XK_Up,     incnmaster,     {.i = +1 } },
-	{ MODKEY,                       XK_Down,   incnmaster,     {.i = -1 } },
-	{ MODKEY,                       XK_Left,   setmfact,       {.f = -0.05} },
-	{ MODKEY,                       XK_Right,  setmfact,       {.f = +0.05} },
+	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
+	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
+	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
+	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
 	{ MODKEY|ShiftMask,             XK_j,      movestack,      {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_k,      movestack,      {.i = -1 } },
 	{ MODKEY,                       XK_Return, zoom,           {0} },
@@ -117,7 +110,7 @@ static Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
-	{ MODKEY|ShiftMask,             XK_r,      quit,           {1} }, 
+	{ MODKEY|ControlMask|ShiftMask, XK_q,      quit,           {1} }, 
 };
 
 /* button definitions */
