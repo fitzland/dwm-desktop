@@ -48,6 +48,12 @@ super + {_,shift} + F11
 super + {_,shift} + F12
     {google-chrome-stable --profile-directory='Default',google-chrome-stable --profile-directory='Profile 1'}
 
+##---------- Terminal Launcher --------------##
+
+# Terminal Launcher
+super + {_,ctrl} + Return
+	{alacritty,kitty}
+
 ##---------- Rofi Launcher & Menus ----------##
 
 # Rofi App Launcher

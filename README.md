@@ -1,12 +1,12 @@
 # 🔲 dwm-setup
 
 ![Made for Debian](https://img.shields.io/badge/Made%20for-Debian-A81D33?style=for-the-badge&logo=debian&logoColor=white)
-![DWM Version](https://img.shields.io/badge/DWM-6.6-005577?style=for-the-badge&logo=c&logoColor=white)
+![DWM Version](https://img.shields.io/badge/DWM-6.7-005577?style=for-the-badge&logo=c&logoColor=white)
 
-A minimal suckless DWM 6.6 setup for Debian-based systems.  
+A minimal suckless DWM 6.7 setup for Debian-based systems.  
 Following the suckless philosophy with carefully selected patches — simple, efficient, and hackable.
 
-> Modified from part of the [JustAGuy Linux](https://codeberg.org/justaguylinux) window manager collection; just for me.
+> Modified from work by the [JustAGuy Linux](https://codeberg.org/justaguylinux) window manager collection; just for me.
 
 ## 📜 Suckless Philosophy
 
@@ -25,73 +25,13 @@ Configuration follows the suckless way: edit `config.def.h`, remove `config.h`, 
 
 ### Quick Install
 ```bash
-git clone https://github.com/fitzland/dwm-setup.git
-cd dwm-setup
-chmod +x install.sh
-./install.sh
+git clone https://github.com/fitzland/dwm-desktop.git
+cd dwm-desktop
+cp -R ./suckless ~/.config/
+cd ~/.config/suckless/dwm && sudo make clean install
+cd ~/.config/suckless/slstatus && sudo make clean install
+cd ~/.config/suckless/st && sudo make clean install
 ```
-
-### Installation Options
-
-The installer follows the suckless principle of simplicity:
-
-```bash
-./install.sh [OPTIONS]
-
-Options:
-  --only-config      Only copy config files (perfect for non-Debian distros)
-  --export-packages  Export package lists for different distros and exit
-  --help            Show usage information
-```
-
-### Distribution-Agnostic Installation
-
-<details>
-<summary><strong>⚠️ UNSUPPORTED: Instructions for other distributions (click to expand)</strong></summary>
-
-**IMPORTANT:** These instructions are provided as-is for advanced users. Non-Debian distributions are **NOT officially supported**. Package names and availability may vary. Use at your own risk.
-
-**Quick Package Export:**
-```bash
-# Export package lists for all supported distros
-./install.sh --export-packages
-```
-
-This will display properly formatted package lists for:
-- Debian/Ubuntu (apt)
-- Arch Linux (pacman) 
-- Fedora (dnf)
-
-**Manual Installation Process:**
-1. Run `./install.sh --export-packages` to see package equivalents
-2. Install the packages using your distro's package manager
-3. Run `./install.sh --only-config` to copy configuration files
-4. Compile and install suckless tools manually:
-   ```bash
-   cd ~/.config/suckless/dwm && sudo make clean install
-   cd ~/.config/suckless/slstatus && sudo make clean install
-   cd ~/.config/suckless/st && sudo make clean install
-   cd ~/.config/suckless/tabbed && sudo make clean install
-   ```
-
-**Note:** Some packages may have different names or may not be available in all distributions. You may need to find equivalents or install from source.
-
-</details>
-
-### Advanced Usage Examples
-
-```bash
-# Export package lists for manual installation
-./install.sh --export-packages
-
-# Update only configuration files (no packages)
-./install.sh --only-config
-
-# Standard installation with optional tools prompt
-./install.sh
-```
-
-**Note:** The script can be run from any location - it automatically detects its directory.
 
 ### What Gets Installed
 
@@ -216,18 +156,9 @@ This launches a rofi menu where you can select from available layouts.
 
 These are the layouts included in this build, in the exact order from `config.def.h`:
 
-- **󰕴 Dwindle** — Fibonacci-style dwindle layout (default)
-- **󰙀 Tile** — Classic master-stack
-- **󰕬 Column Layout** — Vertical column view
-- **󰕯 Centered Master** — Centered master, tiled sides
-- **󰕰 Floating** — Free window placement
-- **󱒈 Bstack** — Master on top, stack below
-- **󰕭 N-Row Grid** — Grid with fixed rows
-- **󱇙 Deck** — Master with tabbed stack
-- **󰕫 Gapless Grid** — Even, gapless grid
-- **󰪷 Spiral** — Spiral Fibonacci layout
-- **󰕮 Monocle** — Fullscreen stacked windows
-- **󰝘 Grid** — Even grid
+- **[]= Tile** — Classic master-stack
+- **[M] Monocle** — Fullscreen stacked windows
+- **><> Floating** — Floating windows
 
 </details>
 
@@ -253,8 +184,7 @@ These are the layouts included in this build, in the exact order from `config.de
 │   └── keybinds.rasi        # Rofi keybinding cheatsheet
 └── scripts/
     ├── autostart.sh         # Startup script
-    ├── help                 # Launches keybind viewer
-    └── dwm-tabs             # Tab management script
+    └── help                 # Launches keybind viewer
 ```
 
 ---
@@ -263,21 +193,18 @@ These are the layouts included in this build, in the exact order from `config.de
 
 | Patch                  | Category                | Version |
 |------------------------|-------------------------|---------|  
-| alwayscenter           | Floating windows        | 6.2     |
-| attachbottom           | Window order            | 6.3     |
-| cool_autostart         | Autostart               | 6.5     |
-| focusedontop           | Floating windows        | 6.6     |
-| focusonnetactive       | Compatibility           | 6.2     |
-| fullscreen             | Window management       | 6.2     |
-| pertag                 | Layout memory           | 6.2     |
-| preserveonrestart      | Session persistence     | 6.3     |
+| pertag                 | Structural foundation   | 6.2     |
+| fullgaps-toggle        | Layout logic            | 6.2     |
+| status2d               | Bar/UI                  | 6.4     |
+| movestack              | Client movement         | 6.5     |
+| attachbottom           | Client placement        | 6.3     |
 | restartsig             | Restart ability         | 6.2     |
+| preserveonrestart      | Session persistence     | 6.3     |
+| fullscreen             | Window management       | 6.2     |
+| focusonnetactive       | Compatibility           | 6.2     |
+| cool_autostart         | Autostart               | 6.5     |
 | shift-tools            | Client management       | 6.2     |
-| status2d-systray       | Bar features            | 6.4     |
-| sticky                 | Window management       | 6.5     |
-| togglefloatingcenter   | Floating windows        | 6.2     |
-| vanitygaps             | Visual spacing          | 6.2     |
-| windowfollow           | Navigation              | 6.2     |
+| ~~focusedontop~~       | Floating windows        | 6.6     |
 
 ---
 
@@ -286,12 +213,23 @@ These are the layouts included in this build, in the exact order from `config.de
 <details>
 <summary>Click to expand Patch Documenation</summary>
 
-### 1. `dwm-alwayscenter-20200625-f04cac6.diff`
+### 7. `dwm-pertag-20200914-61bb8b2.diff`
 **What it does:**  
-Ensures that floating windows (new ones) always appear centered on the screen.
+Each tag remembers its own **layout, master count, and gaps settings**.
 
 **Why it's useful:**  
-Prevents floating windows from opening at weird edges or offsets, especially useful for dialogs or apps you want neatly centered (like file pickers or floating terminal windows).
+This is one of the most **essential DWM patches** if you use multiple tags. It allows each workspace (tag) to have its own independent configuration instead of all tags sharing the same layout.
+
+---
+
+### 12. `dwm-status2d-6.4.diff`
+**What it does:**  
+Adds support for **color-embedded status text and a systray** in DWM’s status bar.
+
+**Why it's useful:**  
+Combines two essential features:
+- Colored status text for aesthetic and information clarity.
+- Systray support for handling system tray icons (volume, network, etc.), which is not natively supported in DWM.
 
 ---
 
@@ -344,12 +282,14 @@ Some applications (like browsers, video players, and games) expect to be able to
 
 ---
 
-### 7. `dwm-pertag-20200914-61bb8b2.diff`
+### 10. `dwm-restartsig-20180523-6.2.diff`
 **What it does:**  
-Each tag remembers its own **layout, master count, and gaps settings**.
+Adds a **restart signal handler** so you can restart DWM without logging out.
 
 **Why it's useful:**  
-This is one of the most **essential DWM patches** if you use multiple tags. It allows each workspace (tag) to have its own independent configuration instead of all tags sharing the same layout.
+Allows easy config reloads and minor changes without logging out, pairing well with `preserveonrestart`.
+
+**Usage:** Press `Super + Shift + R` to restart DWM.
 
 ---
 
@@ -359,17 +299,6 @@ Preserves window positions when restarting DWM.
 
 **Why it's useful:**  
 Critical if you like to restart DWM to reload config changes, keeping windows in place instead of resetting them.
-
----
-
-### 10. `dwm-restartsig-20180523-6.2.diff`
-**What it does:**  
-Adds a **restart signal handler** so you can restart DWM without logging out.
-
-**Why it's useful:**  
-Allows easy config reloads and minor changes without logging out, pairing well with `preserveonrestart`.
-
-**Usage:** Press `Super + Shift + R` to restart DWM.
 
 ---
 
@@ -390,17 +319,6 @@ It allows you to navigate between tags quickly and to move windows around to par
 
 ---
 
-### 12. `dwm-status2d-systray-6.4.diff`
-**What it does:**  
-Adds support for **color-embedded status text and a systray** in DWM’s status bar.
-
-**Why it's useful:**  
-Combines two essential features:
-- Colored status text for aesthetic and information clarity.
-- Systray support for handling system tray icons (volume, network, etc.), which is not natively supported in DWM.
-
----
-
 ### 13. `dwm-sticky-6.5.diff`
 **What it does:**  
 Adds a "sticky" flag to windows, making them visible on all tags.
@@ -409,35 +327,6 @@ Adds a "sticky" flag to windows, making them visible on all tags.
 Perfect for windows you want to always have accessible, like music players, system monitors, or communication apps. Sticky windows follow you across all workspaces.
 
 **Usage:** Press `Super + Y` to toggle sticky mode for the focused window.
-
----
-
-### 14. `dwm-togglefloatingcenter-20210806-138b405f.diff`
-**What it does:**  
-Toggles a window between floating and tiled **while centering it if floating**.
-
-**Why it's useful:**  
-Combines two useful actions into one — not only toggling float, but also ensuring floating windows are neatly centered.
-
-**Usage:** Press `Super + Shift + Space` to toggle floating/tiled mode for the focused window.
-
----
-
-### 15. `dwm-vanitygaps-6.2.diff`
-**What it does:**  
-Adds support for **customizable outer and inner gaps** between windows.
-
-**Why it's useful:**  
-Essential for those who like cleaner layouts with space between windows. Especially good for aesthetic "rice" setups.
-
----
-
-### 16. `dwm-windowfollow-20221002-69d5652.diff`
-**What it does:**  
-Makes it so that when you move a window to another tag, DWM will **follow you to that tag**.
-
-**Why it's useful:**  
-Enhances workflow — instead of moving a window to another tag and then manually switching to that tag, DWM follows automatically.
 
 </details>
 
