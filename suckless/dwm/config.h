@@ -1,22 +1,23 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
+static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const Gap default_gap        = {.isgap = 1, .realgap = 10, .gappx = 10};
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "monospace:size=10" };
+static const char *fonts[]          = { "JetBrainsMono Nerd Font:size=12" };
 static const char dmenufont[]       = "monospace:size=10";
-static const char col_gray1[]       = "#222222";
-static const char col_gray2[]       = "#444444";
+static const char col_gray1[]       = "#1e282a";
+static const char col_gray2[]       = "#80bfff";
 static const char col_gray3[]       = "#bbbbbb";
-static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
+static const char col_gray4[]       = "#1a1a1a";
+static const char col_cyan[]        = "#6CF982"; /* Light green */
+static const char col_barbie[]      = "#de935f"; /* Light orange */
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+	[SchemeNorm] = { col_gray3, col_gray1, col_gray4 },
+	[SchemeSel]  = { col_cyan,  col_gray1, col_barbie  },
 };
 
 static const char *const autostart[] = {
@@ -32,9 +33,28 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+	/* class      			instance    title       tags mask     isfloating   monitor */
+	{ "Gimp",     			NULL,       NULL,       0,            1,           -1 },
+	{ "Alacritty",          NULL,       NULL,       1 << 0,       0,           1  },	
+	{ "kitty",              NULL,       NULL,       1 << 0,       0,           0  },	
+	{ "Code",               NULL,       NULL,       1 << 1,       0,           1  },
+	{ "Meld",               NULL,       NULL,       1 << 1,       0,           0  },
+	{ "discord",            NULL,       NULL,       1 << 7,       0,           -1  },
+	{ "ghostwriter",        NULL,       NULL,       1 << 2,       0,           0  },	
+	{ "Gimp",               NULL,       NULL,       1 << 3,       0,           0  },
+	{ "Inkscape",           NULL,       NULL,       1 << 3,       0,           1  },
+	{ "KeePassXC",          NULL,       NULL,       1 << 4,       0,           0  },	
+	{ "Google-chrome",      NULL,       NULL,       1 << 5,       0,           -1  },
+	{ "Microsoft-edge",     NULL,       NULL,       1 << 6,       0,           0  },
+	{ "Thunar",             NULL,       NULL,       1 << 7,       0,           -1  },
+	{ "firefox-dev",        NULL,       NULL,       1 << 8,       0,           0  },
+	{ "obs",                NULL,       NULL,       1 << 9,       0,           -1  },
+	{ "mpv",                NULL,       NULL,       0,            1,           -1  },
+	{ "Galculator",         NULL,       NULL,       0,            1,           -1  },
+	{ "Transmission-gtk",   NULL,       NULL,       0,            1,           -1  },
+	{ "Lxappearance",       NULL,       NULL,       0,            1,           -1  },
+	{ "Pavucontrol",        NULL,       NULL,       0,            1,           -1  },
+	{ "Rofi",               NULL,       NULL,       0,            1,           -1  },
 };
 
 /* layout(s) */
@@ -52,7 +72,7 @@ static const Layout layouts[] = {
 };
 
 /* key definitions */
-#define MODKEY Mod1Mask
+#define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -65,7 +85,7 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-static const char *termcmd[]  = { "st", NULL };
+static const char *termcmd[]  = { "alacritty", NULL };
 #include "shift-tools.c"
 
 #include "movestack.c"
