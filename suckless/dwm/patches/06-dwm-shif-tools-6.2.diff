@@ -34,21 +34,19 @@ index 1c0b587..1390d17 100644
  
  static Key keys[] = {
  	/* modifier                     key        function        argument */
-+	{ MODKEY,                       XK_o, shiftviewclients,    { .i = +1 } },
-+	{ MODKEY|ShiftMask,             XK_o,	shiftview,         { .i = +1 } },
-+	{ MODKEY|ShiftMask,             XK_i,	shiftview,         { .i = -1 } },
-+	{ MODKEY,	                XK_i, shiftviewclients,    { .i = -1 } },
++	{ MODKEY,                       XK_i,      shiftview,         { .i = -1 } },
++	{ MODKEY,                       XK_o,	   shiftview,         { .i = +1 } },
++	{ MODKEY|ControlMask,	        XK_i,      shiftviewclients,    { .i = -1 } },
++	{ MODKEY|ControlMask,           XK_o,      shiftviewclients,    { .i = +1 } },
  	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
  	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
  	{ MODKEY,                       XK_b,      togglebar,      {0} },
-@@ -69,6 +74,10 @@ static Key keys[] = {
+@@ -69,6 +74,8 @@ static Key keys[] = {
  	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
  	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
  	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
-+	{ MODKEY|ShiftMask,		XK_h,      shiftboth,      { .i = -1 }	},
-+	{ MODKEY|ControlMask,		XK_h,      shiftswaptags,  { .i = -1 }	},
-+	{ MODKEY|ControlMask,		XK_l,      shiftswaptags,  { .i = +1 }	},
-+	{ MODKEY|ShiftMask,             XK_l,      shiftboth,      { .i = +1 }	},
++	{ MODKEY|ShiftMask,		        XK_i,      shiftboth,      { .i = -1 }	},
++	{ MODKEY|ShiftMask,             XK_o,      shiftboth,      { .i = +1 }	},
  	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
  	{ MODKEY,                       XK_Return, zoom,           {0} },
  	{ MODKEY,                       XK_Tab,    view,           {0} },
