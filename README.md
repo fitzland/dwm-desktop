@@ -167,22 +167,33 @@ These are the layouts included in this build, in the exact order from `config.de
 ## 📂 Configuration Files
 
 ```
-~/.config/suckless/
-├── dwm/
-│   ├── config.def.h         # Main DWM configuration (edit this)
-├── st/
+~/suckless/
+├── dwm/ (Dynamic Window Manager - lives here)
+│   ├── patches/             # Directory for DWM patches
+│   ├── config.def.h         # Default configuration (rules, keys, colors, layouts, etc.)
+│   ├── config.h             # Custom configuration (included during compile)
+│   ├── config.mk            # Build settings (compiler flags, install paths, X11/Freetype locations)
+│   ├── drw.c                # Draw library implementation (text rendering, rectangles, colors using Xft/fontconfig)
+│   ├── drw.h                # Header for drw.c (declarations for draw functions, colors, fonts)
+│   ├── dwm.1                # Manual page for dwm
+│   ├── dwm.c                # Core dwm logic — main(), event loop, client management, layouts, tags, input handling
+│   ├── dwm.h                # Header file (declarations for main functions and structures)
+│   ├── util.c               # Utility functions (e.g., error handling, string manipulation)
+│   ├── util.h               # Header file (declarations for utility functions)
+│   └── Keybindings.txt      # Personal cheatsheet for DWM keybindings
+├── st/ (Simple Terminal - lives here)
 │   └── config.def.h         # ST terminal configuration 
-├── slstatus/
+├── slstatus/ (Status Bar - lives here)
 │   └── config.def.h         # Status bar configuration
-├── sxhkd/
+├── sxhkd/ (Simple X Hotkey Daemon - copies to ~/.config/suckless/sxhkd/)
 │   └── sxhkdrc              # Keybindings for sxhkd
-├── dunst/
+├── dunst/ (Simple Notification Daemon - copies to ~/.config/suckless/dunst/)
 │   └── dunstrc              # Notification settings
-├── picom/
+├── picom/ (Simple Compositor - copies to ~/.config/suckless/picom/)
 │   └── picom.conf           # Compositor configuration
-├── rofi/
+├── rofi/ (Simple Rofi Launcher - copies to ~/.config/suckless/rofi/)
 │   └── keybinds.rasi        # Rofi keybinding cheatsheet
-└── scripts/
+└── scripts/ (Utility scripts - copies to ~/.config/suckless/scripts/)
     ├── autostart.sh         # Startup script
     └── help                 # Launches keybind viewer
 ```
