@@ -241,8 +241,6 @@ It enhances the look of your border, allowing you to see your desktop wallpaper.
 - `Super + Shift + equal` - Rest the size of gaps to default
 - `Super + Shift + minus` - Toggle the gaps on or off
 
-</details>
-
 ---
 
 ### 3. `dwm-status2d-6.3.diff`
@@ -352,6 +350,8 @@ It allows you to navigate between tags quickly and to move windows around to par
 - `Super + Ctrl + O` - View tag to the right with clients
 - `Super + Shift + I` - Move window to the left and view tag
 - `Super + Shift + 0` - Move window to the right and view tag
+
+</details>
 
 ---
 
