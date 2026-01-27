@@ -21,7 +21,25 @@ static const char *colors[][3]      = {
 };
 
 static const char *const autostart[] = {
-	"st", NULL,
+	/* Fix Java UI redraw issues */
+	/* "wmname", "LG3D", NULL, */
+
+	/* Compose key */
+	"setxkbmap", "-option", "compose:rctrl", NULL,
+
+	/* Fix cursor */
+	"xsetroot", "-cursor_name", "left_ptr", NULL,
+
+	/* Start programs */
+	"sh", "-c", "~/.screenlayout/monitor.sh", NULL,
+	"slstatus", NULL,
+	"lxpolkit", NULL,
+	"feh", "--no-xinerama", "--bg-fill",
+		"/home/jeff/.config/suckless/wallpaper/wide/dwm.png", NULL,
+	"sxhkd", "-c", "/home/jeff/.config/suckless/sxhkd/sxhkdrc", NULL,
+	"dunst", "-config", "/home/jeff/.config/suckless/dunst/dunstrc", NULL,
+	"picom", "--config", "/home/jeff/.config/suckless/picom/picom.conf", "-b", NULL,
+	"sh", "/home/jeff/.dropbox-dist/dropboxd", NULL,		
 	NULL /* terminate */
 };
 
