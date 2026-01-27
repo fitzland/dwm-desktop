@@ -26,12 +26,23 @@ Configuration follows the suckless way: edit `config.def.h`, remove `config.h`, 
 ### Quick Install
 ```bash
 git clone https://github.com/fitzland/dwm-desktop.git
-cd dwm-desktop
-cp -R ./suckless ~/.config/
+```
+
+Compile Suckless applications.
+
+```bash
 cd ~/.config/suckless/dwm && sudo make clean install
 cd ~/.config/suckless/slstatus && sudo make clean install
 cd ~/.config/suckless/st && sudo make clean install
 ```
+Copy configuration files to `~/.config/suckless`
+
+```bash
+cd dwm-desktop
+sh deploy-config.sh
+```
+
+Edit config to your liking.
 
 ### What Gets Installed
 
@@ -100,6 +111,9 @@ Additional browsers, editors, and utilities available through the optional tools
 
 ## 🔑 Keybindings Overview
 
+<details>
+<summary>Click to expand Keybinding Overview</summary>
+
 Keybindings are split between two systems:
 
 - `~/.config/suckless/dwm/config.def.h` for **DWM-specific keybindings** (window management, layout control, tag switching)
@@ -138,6 +152,8 @@ Launch the keybind cheatsheet anytime with:
 | `Super + 1–=`        | Switch to tag                   |
 | `Super + Shift + 1–=`| Move window to tag              |
 
+</details>
+
 ---
 
 ## 🧱 Layouts
@@ -158,6 +174,9 @@ These are the layouts included in this build, in a modified order from `config.d
 ---
 
 ## 📂 File Structure
+
+<details>
+<summary>Click to expand File Structure</summary>
 
 ```
 ~/suckless/
@@ -191,9 +210,14 @@ These are the layouts included in this build, in a modified order from `config.d
     └── help                 # Launches keybind viewer
 ```
 
+</details>
+
 ---
 
 ## 🧩 Patches Summary
+
+<details>
+<summary>Click to expand Patch Summary</summary>
 
 These patches and plugin provide functionality while applying cleanly (generally) and keeping system stable.
 
@@ -211,6 +235,8 @@ These patches and plugin provide functionality while applying cleanly (generally
 | cool_autostart         | Autostart               | 6.5     |
 | shift-tools            | Client management       | 6.2     |
 | ~~focusedontop~~       | Floating windows        | 6.6     |
+
+</details>
 
 ---
 
