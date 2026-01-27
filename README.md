@@ -32,9 +32,9 @@ Compile Suckless applications.
 
 ```bash
 cd dwm-desktop
-cd ./suckless/dwm && sudo make clean install && cd ..
-cd ./suckless/slstatus && sudo make clean install && cd ..
-cd ./suckless/st && sudo make clean install && cd ..
+cd ./suckless/dwm && sudo make clean install && cd ../..
+cd ./suckless/slstatus && sudo make clean install && cd ../..
+cd ./suckless/st && sudo make clean install && cd ../..
 ```
 Copy configuration files to `~/.config/suckless`
 
