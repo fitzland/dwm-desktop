@@ -934,6 +934,23 @@ drawbar(Monitor *m)
 	drw_setscheme(drw, scheme[SchemeNorm]);
 	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
 
+	if (m->lt[m->sellt]->arrange == monocle) {
+		unsigned int n = 0;
+		unsigned int i = 0;
+		Client *c;
+		char buf[16];
+
+		for (c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
+		for (c = nexttiled(m->clients); c && c != m->sel; c = nexttiled(c->next), i++);
+
+		if (n > 0) {
+			snprintf(buf, sizeof(buf), "[%d/%d]", i + 1, n);
+			w = TEXTW(buf);
+			drw_setscheme(drw, scheme[SchemeNorm]);
+			x = drw_text(drw, x, 0, w, bh, lrpad / 2, buf, 0);
+		}
+	}
+
 	if ((w = m->ww - tw - x) > bh) {
 		if (m->sel) {
 			drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
@@ -1340,8 +1357,6 @@ monocle(Monitor *m)
 	for (c = m->clients; c; c = c->next)
 		if (ISVISIBLE(c))
 			n++;
-	if (n > 0) /* override layout symbol */
-		snprintf(m->ltsymbol, sizeof m->ltsymbol, "[%d]", n);
 	for (c = nexttiled(m->clients); c; c = nexttiled(c->next))
 		resize(c, m->wx, m->wy, m->ww - 2 * c->bw, m->wh - 2 * c->bw, 0);
 }
