@@ -53,7 +53,7 @@ static const Rule rules[] = {
 	 */
 	/* class      			instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",     			NULL,       NULL,       0,            1,           -1  },
-	{ "Alacritty",          NULL,       NULL,       1 << 0,       0,           -1  },	
+	{ "Alacritty",          NULL,       NULL,       1 << 0,       0,            0  },	
 	{ "kitty",              NULL,       NULL,       1 << 0,       0,            1  },	
 	{ "Code",               NULL,       NULL,       1 << 1,       0,            1  },
 	{ "Meld",               NULL,       NULL,       1 << 1,       0,            0  },
@@ -163,6 +163,16 @@ static Key keys[] = {
 	TAGKEYS(                        XK_KP_7,                   6)
 	TAGKEYS(                        XK_KP_8,                   7)
 	TAGKEYS(                        XK_KP_9,                   8)	
+	/* Add numpad versions (NumLock off) */
+	TAGKEYS( 						XK_KP_End,    			   0 )
+	TAGKEYS( 						XK_KP_Down,     		   1 )
+	TAGKEYS( 						XK_KP_Next,   			   2 )
+	TAGKEYS( 						XK_KP_Left,   			   3 )
+	TAGKEYS( 						XK_KP_Begin,  			   4 )
+	TAGKEYS( 						XK_KP_Right,  			   5 )
+	TAGKEYS( 						XK_KP_Home,     		   6 )
+	TAGKEYS( 						XK_KP_Up,     			   7 )
+	TAGKEYS( 						XK_KP_Prior,  			   8 )
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
 	{ MODKEY|ShiftMask,             XK_r,      quit,           {1} }, 
 };
