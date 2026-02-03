@@ -38,7 +38,7 @@ static const char *const autostart[] = {
 	"sxhkd", "-c", "/home/jeff/.config/suckless/sxhkd/sxhkdrc", NULL,
 	"dunst", "-config", "/home/jeff/.config/suckless/dunst/dunstrc", NULL,
 	"picom", "--config", "/home/jeff/.config/suckless/picom/picom.conf", "-b", NULL,
-	"sh", "-c", "flatpak run com.dropbox.Client", NULL,
+	"sh", "-c", "flatpak run com.dropbox.Client start", NULL,
 	NULL /* terminate */
 };
 
