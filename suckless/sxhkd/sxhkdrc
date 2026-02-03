@@ -40,13 +40,9 @@ super + {_,shift} + F9
 super + {_,shift} + F10
     {firefox-devedition,firefox-devedition --private-window}
 
-#Microsoft Edge Home
-super + F11
-	sh -c 'pgrep -f com.microsoft.Edge >/dev/null || flatpak run com.microsoft.Edge --profile-directory="Default"'
-
-#Microsoft Edge Work
-super + shift + F11
-	sh -c 'pgrep -f com.microsoft.Edge >/dev/null || flatpak run com.microsoft.Edge --profile-directory="Profile 1"'
+#Microsoft Edge
+super + {_,shift} + F11
+	{flatpak run com.microsoft.Edge --profile-directory="Default",flatpak run com.microsoft.Edge --profile-directory="Profile 1"} 
 
 #Chrome Primary
 super + {_,shift} + F12
