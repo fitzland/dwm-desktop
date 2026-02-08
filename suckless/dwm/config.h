@@ -21,15 +21,12 @@ static const char *colors[][3]      = {
 };
 
 static const char *const autostart[] = {
-	/* Fix Java UI redraw issues */
-	/* "wmname", "LG3D", NULL, */
-
 	/* Compose key */
 	"setxkbmap", "-option", "compose:rctrl", NULL,
-
+	
 	/* Fix cursor */
 	"xsetroot", "-cursor_name", "left_ptr", NULL,
-
+	
 	/* Start programs */
 	"sh", "-c", "~/.screenlayout/monitor.sh", NULL,
 	"slstatus", NULL,
@@ -38,6 +35,8 @@ static const char *const autostart[] = {
 	"sxhkd", "-c", "/home/jeff/.config/suckless/sxhkd/sxhkdrc", NULL,
 	"dunst", "-config", "/home/jeff/.config/suckless/dunst/dunstrc", NULL,
 	"picom", "--config", "/home/jeff/.config/suckless/picom/picom.conf", "-b", NULL,
+	/* Fix Java UI redraw issues */
+	"sh", "-c", "sleep 3 && wmname LG3D", NULL,
 	"sh", "-c", "flatpak run com.dropbox.Client start", NULL,
 	NULL /* terminate */
 };
