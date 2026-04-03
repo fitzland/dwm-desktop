@@ -37,7 +37,7 @@ static const char *const autostart[] = {
 	"picom", "--config", "/home/jeff/.config/suckless/picom/picom.conf", "-b", NULL,
 	/* Fix Java UI redraw issues */
 	"sh", "-c", "sleep 3 && wmname LG3D", NULL,
-	"sh", "-c", "flatpak run com.dropbox.Client start", NULL,
+	"dropbox", "start", NULL,
 	NULL /* terminate */
 };
 
@@ -53,7 +53,7 @@ static const Rule rules[] = {
 	{ "Gimp",     			NULL,       NULL,       0,            1,           -1  },
 	{ "Alacritty",          NULL,       NULL,       1 << 0,       0,            0  },	
 	{ "kitty",              NULL,       NULL,       1 << 0,       0,            1  },	
-	{ "Code",               NULL,       NULL,       1 << 1,       0,            1  },
+	{ "Code",               NULL,       NULL,       1 << 1,       0,            0  },
 	{ "Meld",               NULL,       NULL,       1 << 1,       0,            0  },
 	{ "discord",            NULL,       NULL,       1 << 7,       0,           -1  },
 	{ "ghostwriter",        NULL,       NULL,       1 << 2,       0,            0  },	
@@ -62,7 +62,7 @@ static const Rule rules[] = {
 	{ "KeePassXC",          NULL,       NULL,       1 << 4,       0,            0  },	
 	{ "Google-chrome",      NULL,       NULL,       1 << 5,       0,           -1  },
 	{ "Microsoft-edge",     NULL,       NULL,       1 << 6,       0,           -1  },
-	{ "Thunar",             NULL,       NULL,       1 << 7,       0,           -1  },
+	{ "Thunar",             NULL,       NULL,       1 << 7,       0,            1  },
 	{ "firefox-dev",        NULL,       NULL,       1 << 8,       0,           -1  },
 	{ "mpv",                NULL,       NULL,       0,            1,           -1  },
 	{ "Galculator",         NULL,       NULL,       0,            1,           -1  },
