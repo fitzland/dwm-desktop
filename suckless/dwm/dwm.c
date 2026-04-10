@@ -323,6 +323,7 @@ autostart_exec() {
 	for (p = autostart; *p; i++, p++) {
 		if ((autostart_pids[i] = fork()) == 0) {
 			setsid();
+			signal(SIGCHLD, SIG_DFL);
 			execvp(*p, (char *const *)p);
 			fprintf(stderr, "dwm: execvp %s\n", *p);
 			perror(" failed");
