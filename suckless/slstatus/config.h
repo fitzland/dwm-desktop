@@ -65,6 +65,7 @@ static const char unknown_str[] = "n/a";
  */
 static const struct arg args[] = {
 	/* function format          argument */
+	{ dropbox_status, "%s  ", NULL },
 	{ cpu_perc, "^c#ff6b6b^ 󰻠 ^c#FFFFFF^%s%% ", NULL },
 	{ ram_perc, "^c#4fc3f7^ 󰍛 ^c#FFFFFF^%s%% ", NULL },
 	{ disk_perc, "^c#ffc107^ 󰋊 ^c#FFFFFF^%s%% ", "/" },

@@ -15,6 +15,9 @@ const char *cpu_perc(const char *unused);
 /* datetime */
 const char *datetime(const char *fmt);
 
+/* dropbox */
+const char *dropbox_status(const char *unused);
+
 /* disk */
 const char *disk_free(const char *path);
 const char *disk_perc(const char *path);
