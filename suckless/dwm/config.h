@@ -72,6 +72,7 @@ static const Rule rules[] = {
 	{ "Lxappearance",       NULL,       NULL,       0,            1,           -1  },
 	{ "Pavucontrol",        NULL,       NULL,       0,            1,           -1  },
 	{ "Rofi",               NULL,       NULL,       0,            1,           -1  },
+	{ "Hermes",             NULL,       NULL,       1 << 2,       0,           -1  },
 };
 
 /* layout(s) */
