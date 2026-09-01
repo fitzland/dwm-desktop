@@ -134,7 +134,7 @@ float alpha = 0.95; /* For st 0.9.2, use decimal alpha value */
 
 /* Font configuration */
 /* Note: newer st versions may handle font differently. Adjust as needed. */
-char *font = "JetBrainsMono Nerd Font Mono:size=11:antialias=true:autohint=true";
+char *font = "JetBrainsMono Nerd Font Mono:size=12:antialias=true:autohint=true";
 
 static char *font2[] = {
     /* Adwaita Mono: fills ~82% of the codepoints JetBrainsMono lacks -
