@@ -1,0 +1,6 @@
+[Unit]
+Description=Fire due dwm reminders
+
+[Service]
+Type=oneshot
+ExecStart=%h/.config/suckless/scripts/rofi_remind sweep

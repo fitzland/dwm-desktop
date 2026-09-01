@@ -64,6 +64,14 @@ super + {_,shift} + slash
 super + {_,shift} + backslash
 	~/.config/suckless/scripts/{rofi_runner,rofi_bluetooth}
 	 
+# Set a Reminder
+super + r
+	~/.config/suckless/scripts/rofi_remind
+
+# Cancel a Pending Reminder
+super + ctrl + r
+	~/.config/suckless/scripts/rofi_remind cancel
+
 # help with shortcuts
 super + h
 	~/.config/suckless/scripts/help

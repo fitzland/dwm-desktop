@@ -1,0 +1,13 @@
+[Unit]
+Description=Check for due dwm reminders
+
+[Timer]
+# Relative to user-manager start, i.e. login: catches anything that came due
+# while the machine was off.
+OnStartupSec=15s
+OnUnitActiveSec=30s
+AccuracySec=1s
+Unit=dwm-remind.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,194 @@
+#!/usr/bin/env bash
+# rofi_remind - set a reminder from a rofi prompt; fires as a dunst popup.
+#
+#   rofi_remind              rofi prompt to add a reminder
+#   rofi_remind add SPEC     add from the command line
+#   rofi_remind list         print pending reminders
+#   rofi_remind cancel       rofi picker to cancel a pending reminder
+#   rofi_remind sweep        fire anything due (run by dwm-remind.timer)
+#
+# SPEC is "<when> <message>":
+#   15m call the plumber        relative: 30s 15m 2h 1h30m 3d
+#   14:30 leave for the airport  absolute: anything `date -d` understands
+#   tomorrow 9:00 staff meeting
+
+set -uo pipefail
+
+QUEUE_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/dwm-remind"
+QUEUE="$QUEUE_DIR/queue"
+LOCK="$QUEUE_DIR/lock"
+# A reminder more than this many seconds overdue was missed while the machine
+# was off or asleep; it still fires, but labelled.
+MISSED_GRACE=90
+
+mkdir -p "$QUEUE_DIR"
+touch "$QUEUE"
+
+die() {
+	notify-send -u critical "Reminder" "$1"
+	exit 1
+}
+
+# Turn "1h30m" / "15m" / "90s" into seconds. Prints nothing if not relative.
+parse_relative() {
+	local spec="$1" total=0 num unit rest
+	[[ "$spec" =~ ^([0-9]+[smhdSMHD])+$ ]] || return 1
+	rest="$spec"
+	while [[ -n "$rest" ]]; do
+		[[ "$rest" =~ ^([0-9]+)([smhdSMHD])(.*)$ ]] || return 1
+		num="${BASH_REMATCH[1]}"
+		unit="${BASH_REMATCH[2],,}"
+		rest="${BASH_REMATCH[3]}"
+		case "$unit" in
+		s) total=$((total + num)) ;;
+		m) total=$((total + num * 60)) ;;
+		h) total=$((total + num * 3600)) ;;
+		d) total=$((total + num * 86400)) ;;
+		esac
+	done
+	[[ "$total" -gt 0 ]] || return 1
+	printf '%s' "$total"
+}
+
+# Split "<when> <message>" into "<epoch>\t<message>".
+parse_spec() {
+	local spec now words when secs epoch n prefix
+	spec="$(printf '%s' "$1" | sed -E 's/^[[:space:]]+//; s/[[:space:]]+$//')"
+	# Optional leading "in"/"at" is noise: "in 15m foo" == "15m foo".
+	spec="$(printf '%s' "$spec" | sed -E 's/^(in|at)[[:space:]]+//I')"
+	[[ -n "$spec" ]] || return 1
+	now="$(date +%s)"
+	read -r -a words <<<"$spec"
+
+	# Relative shorthand always wins on the first token.
+	if secs="$(parse_relative "${words[0]}")"; then
+		[[ "${#words[@]}" -ge 2 ]] || return 1
+		printf '%s\t%s' "$((now + secs))" "${spec#"${words[0]}"* }"
+		return 0
+	fi
+
+	# Otherwise take the longest leading run of words `date -d` accepts, so
+	# "tomorrow 9:00 staff meeting" splits after "9:00".
+	for ((n = 4; n >= 1; n--)); do
+		[[ "${#words[@]}" -gt "$n" ]] || continue
+		prefix="${words[*]:0:n}"
+		epoch="$(date -d "$prefix" +%s 2>/dev/null)" || continue
+		[[ -n "$epoch" ]] || continue
+		# A bare time already past today means tomorrow.
+		if [[ "$epoch" -le "$now" ]]; then
+			epoch="$(date -d "$prefix tomorrow" +%s 2>/dev/null)" || continue
+			[[ "$epoch" -gt "$now" ]] || continue
+		fi
+		when="${spec#"$prefix"}"
+		when="$(printf '%s' "$when" | sed -E 's/^[[:space:]]+//')"
+		[[ -n "$when" ]] || continue
+		printf '%s\t%s' "$epoch" "$when"
+		return 0
+	done
+	return 1
+}
+
+add() {
+	local parsed epoch msg id
+	parsed="$(parse_spec "$1")" ||
+		die "Could not read a time out of: $1"
+	epoch="${parsed%%$'\t'*}"
+	msg="${parsed#*$'\t'}"
+	id="$(date +%s%N)$RANDOM"
+	(
+		flock 9
+		printf '%s\t%s\t%s\n' "$epoch" "$id" "$msg" >>"$QUEUE"
+	) 9>"$LOCK"
+	notify-send -a rofi_remind "Reminder set" "$(date -d "@$epoch" '+%a %-I:%M %p') — $msg"
+}
+
+list() {
+	local epoch id msg
+	sort -n "$QUEUE" | while IFS=$'\t' read -r epoch id msg; do
+		[[ -n "${epoch:-}" ]] || continue
+		printf '%s\t%s — %s\n' "$id" "$(date -d "@$epoch" '+%a %-I:%M %p')" "$msg"
+	done
+}
+
+cancel_rofi() {
+	local pending chosen id
+	pending="$(list)"
+	if [[ -z "$pending" ]]; then
+		notify-send -a rofi_remind "Reminders" "Nothing pending."
+		return 0
+	fi
+	chosen="$(printf '%s\n' "$pending" | cut -f2- |
+		rofi -dmenu -i -p "cancel reminder" -format i)" || return 0
+	[[ -n "$chosen" ]] || return 0
+	id="$(printf '%s\n' "$pending" | sed -n "$((chosen + 1))p" | cut -f1)"
+	[[ -n "$id" ]] || return 0
+	(
+		flock 9
+		grep -v -- "$(printf '\t%s\t' "$id")" "$QUEUE" >"$QUEUE.tmp" || true
+		mv "$QUEUE.tmp" "$QUEUE"
+	) 9>"$LOCK"
+	notify-send -a rofi_remind "Reminder cancelled"
+}
+
+sweep() {
+	local now epoch id msg title failed
+	now="$(date +%s)"
+	(
+		flock 9
+		# Both scratch files are truncated here, never appended across sweeps:
+		# a leftover .due would re-fire on the next tick.
+		: >"$QUEUE.due"
+		: >"$QUEUE.tmp"
+		while IFS=$'\t' read -r epoch id msg; do
+			[[ -n "${epoch:-}" ]] || continue
+			if [[ "$epoch" -le "$now" ]]; then
+				printf '%s\t%s\t%s\n' "$epoch" "$id" "$msg" >>"$QUEUE.due"
+			else
+				printf '%s\t%s\t%s\n' "$epoch" "$id" "$msg" >>"$QUEUE.tmp"
+			fi
+		done <"$QUEUE"
+		mv "$QUEUE.tmp" "$QUEUE"
+	) 9>"$LOCK"
+
+	[[ -s "$QUEUE.due" ]] || return 0
+	failed=""
+	while IFS=$'\t' read -r epoch id msg; do
+		[[ -n "${epoch:-}" ]] || continue
+		if [[ $((now - epoch)) -gt "$MISSED_GRACE" ]]; then
+			title="Reminder (missed $(date -d "@$epoch" '+%a %-I:%M %p'))"
+		else
+			title="Reminder"
+		fi
+		# If the popup does not land - e.g. this timer beat dunst to the
+		# session at login - keep the reminder rather than dropping it.
+		if ! dunstify -u critical -a rofi_remind -i appointment-soon "$title" "$msg"; then
+			failed+="$(printf '%s\t%s\t%s' "$epoch" "$id" "$msg")"$'\n'
+		fi
+	done <"$QUEUE.due"
+	rm -f "$QUEUE.due"
+
+	if [[ -n "$failed" ]]; then
+		(
+			flock 9
+			printf '%s' "$failed" >>"$QUEUE"
+		) 9>"$LOCK"
+	fi
+}
+
+case "${1:-prompt}" in
+prompt)
+	input="$(rofi -dmenu -l 0 -p "remind me" \
+		-mesg "15m call the plumber   ·   tomorrow 9:00 staff meeting")" || exit 0
+	[[ -n "${input// /}" ]] || exit 0
+	add "$input"
+	;;
+add)
+	shift
+	[[ $# -gt 0 ]] || die "usage: rofi_remind add <when> <message>"
+	add "$*"
+	;;
+list) list ;;
+cancel) cancel_rofi ;;
+sweep) sweep ;;
+*) die "unknown command: $1" ;;
+esac
