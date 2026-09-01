@@ -65,7 +65,7 @@ static const char unknown_str[] = "n/a";
  */
 static const struct arg args[] = {
 	/* function format          argument */
-	{ run_command, "%s", "dropbox status 2>/dev/null | grep -qiE 'up to date|syncing|indexing|downloading|uploading' && printf '^c#4caf50^󰇣 ' || printf '^c#f44336^󰇣 '" },
+	{ run_command, "%s", "/home/jeff/.local/bin/dropbox-status-icon" },
 	{ cpu_perc, "^c#ff6b6b^ 󰻠 ^c#FFFFFF^%s%% ", NULL },
 	{ ram_perc, "^c#4fc3f7^ 󰍛 ^c#FFFFFF^%s%% ", NULL },
 	{ disk_perc, "^c#ffc107^ 󰋊 ^c#FFFFFF^%s%% ", "/" },

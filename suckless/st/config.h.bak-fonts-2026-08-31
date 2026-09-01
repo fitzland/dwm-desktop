@@ -137,12 +137,7 @@ float alpha = 0.95; /* For st 0.9.2, use decimal alpha value */
 char *font = "JetBrainsMono Nerd Font Mono:size=11:antialias=true:autohint=true";
 
 static char *font2[] = {
-    /* Adwaita Mono: fills ~82% of the codepoints JetBrainsMono lacks -
-       full polytonic Greek, all combining marks, math and box drawing. */
-    "Adwaita Mono:pixelsize=11:antialias=true:autohint=true",
-    /* Liberation Mono: the only installed monospace font with Hebrew
-       letters plus niqqud/cantillation points. */
-    "Liberation Mono:pixelsize=11:antialias=true:autohint=true",
+    "FiraCode Nerd Font Mono:pixelsize=11:antialias=true:autohint=true",
     "Symbols Nerd Font Mono:pixelsize=11:antialias=true:autohint=true",
 };
 
