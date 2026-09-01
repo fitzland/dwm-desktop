@@ -1,0 +1,51 @@
+/**
+ * Centered alert for rofi_remind. Matches the Dracula palette used by the
+ * other menus, but framed in @urgent so a reminder reads as "act now"
+ * rather than as another notification.
+ **/
+
+/*****----- Configuration -----*****/
+configuration {
+    show-icons:                  false;
+}
+
+/*****----- Global Properties -----*****/
+@import                          "shared/colors.rasi"
+@import                          "shared/fonts.rasi"
+
+/*****----- Main Window -----*****/
+window {
+    transparency:                "real";
+    location:                    center;
+    anchor:                      center;
+    fullscreen:                  false;
+    width:                       40%;
+    x-offset:                    0px;
+    y-offset:                    0px;
+    margin:                      0px;
+    padding:                     0px;
+    border:                      3px solid;
+    border-radius:               0px;
+    border-color:                @urgent;
+    cursor:                      "default";
+    background-color:            @background;
+}
+
+/*****----- Message -----*****/
+error-message {
+    padding:                     30px;
+    margin:                      0px;
+    border:                      0px;
+    background-color:            transparent;
+    text-color:                  @foreground;
+}
+
+textbox {
+    background-color:            transparent;
+    text-color:                  @foreground;
+    vertical-align:              0.5;
+    horizontal-align:            0.5;
+    markup:                      true;
+    placeholder-color:           @foreground;
+    blink:                       true;
+}

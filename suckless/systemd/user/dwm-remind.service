@@ -4,3 +4,6 @@ Description=Fire due dwm reminders
 [Service]
 Type=oneshot
 ExecStart=%h/.config/suckless/scripts/rofi_remind sweep
+# The alert window outlives this oneshot. Without this, the default
+# control-group kill would tear rofi down the instant the sweep exits.
+KillMode=process

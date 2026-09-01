@@ -20,6 +20,9 @@ LOCK="$QUEUE_DIR/lock"
 # A reminder more than this many seconds overdue was missed while the machine
 # was off or asleep; it still fires, but labelled.
 MISSED_GRACE=90
+# Reminders fire as a centered rofi alert rather than a corner notification:
+# these are "act now" items, so they are meant to interrupt.
+ALERT_THEME="$HOME/.config/suckless/rofi/reminder.rasi"
 
 mkdir -p "$QUEUE_DIR"
 touch "$QUEUE"
@@ -130,8 +133,33 @@ cancel_rofi() {
 	notify-send -a rofi_remind "Reminder cancelled"
 }
 
+# The centered alert needs a reachable X display; the corner "reminder set"
+# notification only needs D-Bus. Guarding here keeps a reminder on the queue
+# instead of dropping it if the timer beats X to the session at login.
+display_ready() {
+	[[ -n "${DISPLAY:-}" ]] || return 1
+	if command -v xprop >/dev/null 2>&1; then
+		timeout 2 xprop -root >/dev/null 2>&1 || return 1
+	fi
+	command -v rofi >/dev/null 2>&1
+}
+
+pango_escape() {
+	printf '%s' "$1" | sed -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g'
+}
+
+alert() {
+	local title="$1" body="$2"
+	setsid -f rofi -e "<span size='x-large' weight='bold' foreground='#FF5555'>⏰  $(pango_escape "$title")</span>
+
+$body
+
+<span size='small' foreground='#6272A4'>Esc / Enter to dismiss</span>" \
+		-markup -m -1 -theme "$ALERT_THEME" >/dev/null 2>&1
+}
+
 sweep() {
-	local now epoch id msg title failed
+	local now epoch id msg title failed body count stamp
 	now="$(date +%s)"
 	(
 		flock 9
@@ -151,21 +179,38 @@ sweep() {
 	) 9>"$LOCK"
 
 	[[ -s "$QUEUE.due" ]] || return 0
+
+	# Everything due in this sweep goes into ONE alert. Two rofi windows
+	# would fight over the keyboard grab and the loser would be lost.
 	failed=""
-	while IFS=$'\t' read -r epoch id msg; do
-		[[ -n "${epoch:-}" ]] || continue
-		if [[ $((now - epoch)) -gt "$MISSED_GRACE" ]]; then
-			title="Reminder (missed $(date -d "@$epoch" '+%a %-I:%M %p'))"
-		else
-			title="Reminder"
-		fi
-		# If the popup does not land - e.g. this timer beat dunst to the
-		# session at login - keep the reminder rather than dropping it.
-		if ! dunstify -u critical -a rofi_remind -i appointment-soon "$title" "$msg"; then
+	if ! display_ready; then
+		while IFS=$'\t' read -r epoch id msg; do
+			[[ -n "${epoch:-}" ]] || continue
 			failed+="$(printf '%s\t%s\t%s' "$epoch" "$id" "$msg")"$'\n'
+		done <"$QUEUE.due"
+		rm -f "$QUEUE.due"
+	else
+		count=0
+		body=""
+		while IFS=$'\t' read -r epoch id msg; do
+			[[ -n "${epoch:-}" ]] || continue
+			count=$((count + 1))
+			if [[ $((now - epoch)) -gt "$MISSED_GRACE" ]]; then
+				stamp=" <span size='small' foreground='#6272A4'>(missed $(date -d "@$epoch" '+%a %-I:%M %p'))</span>"
+			else
+				stamp=""
+			fi
+			body+="<span size='large'>$(pango_escape "$msg")</span>$stamp"$'\n'
+		done <"$QUEUE.due"
+		rm -f "$QUEUE.due"
+
+		if [[ "$count" -eq 1 ]]; then
+			title="Reminder"
+		else
+			title="Reminders ($count)"
 		fi
-	done <"$QUEUE.due"
-	rm -f "$QUEUE.due"
+		alert "$title" "$body"
+	fi
 
 	if [[ -n "$failed" ]]; then
 		(
