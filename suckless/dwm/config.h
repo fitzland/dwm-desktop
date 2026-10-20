@@ -37,7 +37,7 @@ static const char *const autostart[] = {
 	"picom", "--config", "/home/jeff/.config/suckless/picom/picom.conf", "-b", NULL,
 	/* Fix Java UI redraw issues */
 	"sh", "-c", "sleep 3 && wmname LG3D", NULL,
-	"dropbox", "start", NULL,
+	"sh", "-c", "~/.local/bin/dropbox-start-guarded", NULL,
 	NULL /* terminate */
 };
 

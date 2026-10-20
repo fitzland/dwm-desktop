@@ -45,7 +45,7 @@ dunst -config ~/.config/suckless/dunst/dunstrc &
 picom --config ~/.config/suckless/picom/picom.conf -b &
 
 # dropbox
-~/.dropbox-dist/dropboxd &
+~/.local/bin/dropbox-start-guarded &
 
 wmname LG3D &
 export _JAVA_AWT_WM_NONREPARENTING=1

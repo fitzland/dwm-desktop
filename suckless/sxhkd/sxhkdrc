@@ -106,19 +106,19 @@ XF86AudioMute
 
 # Take a Screenshot (Region Select)
 super + Print
-	flameshot gui --path ~/Screenshots/
+	flameshot gui --path ~/Dropbox/journal/captures/
 
 # Take a Fullscreen Screenshot
 Print
-	flameshot full --path ~/Screenshots/
+	flameshot full --path ~/Dropbox/journal/captures/
 	
 # Take a Screenshot (Region Select)
 super + shift + s
-	flameshot gui --path ~/Screenshots/
+	flameshot gui --path ~/Dropbox/journal/captures/
 
 # Take a Fullscreen Screenshot
 super + s
-	flameshot full --path ~/Screenshots/
+	flameshot full --path ~/Dropbox/journal/captures/
     
 # Power Off/Reboot
 super + x 
