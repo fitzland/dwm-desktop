@@ -50,7 +50,7 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class      			instance    title       tags mask     isfloating   monitor */
-	{ "kitty",              NULL,       NULL,       1 << 0,       0,            0  },	
+	{ "kitty",              NULL,       NULL,       1 << 2,       0,            0  },	
 	{ "Code",               NULL,       NULL,       1 << 1,       0,            0  },
 	{ "Meld",               NULL,       NULL,       1 << 1,       0,            0  },
 	{ "PDF Studio Pro",     NULL,       NULL,       1 << 2,       0,            0  },	
