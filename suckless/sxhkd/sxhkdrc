@@ -52,7 +52,7 @@ super + {_,shift} + F12
 
 # Terminal Launcher
 super + {_,ctrl} + Return
-	{alacritty,kitty}
+	{alacritty,kitty -e $HOME/.local/bin/herdr}
 
 ##---------- Rofi Launcher & Menus ----------##
 

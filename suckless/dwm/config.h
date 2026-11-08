@@ -52,7 +52,7 @@ static const Rule rules[] = {
 	/* class      			instance    title       tags mask     isfloating   monitor */
 	{ "Gimp",     			NULL,       NULL,       0,            1,           -1  },
 	{ "Alacritty",          NULL,       NULL,       1 << 0,       0,            0  },	
-	{ "kitty",              NULL,       NULL,       1 << 0,       0,            1  },	
+	{ "kitty",              NULL,       NULL,       1 << 2,       0,            0  },	
 	{ "com.microsoft.VSCode", NULL,       NULL,       1 << 1,       0,            0  },
 	{ "Meld",               NULL,       NULL,       1 << 1,       0,            0  },
 	{ "discord",            NULL,       NULL,       1 << 7,       0,           -1  },
